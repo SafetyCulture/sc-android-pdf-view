@@ -35,6 +35,11 @@ public class Callbacks {
      */
     private LinkHandler linkHandler;
 
+    /**
+     * Call back object to call when zoom level changes
+     */
+    private OnZoomChangeListener onZoomChangeListener;
+
     public void setOnError(OnErrorListener onErrorListener) {
         this.onErrorListener = onErrorListener;
     }
@@ -60,6 +65,16 @@ public class Callbacks {
     public void callLinkHandler(LinkTapEvent event) {
         if (linkHandler != null) {
             linkHandler.handleLinkEvent(event);
+        }
+    }
+
+    public void setOnZoomChange(OnZoomChangeListener onZoomChangeListener) {
+        this.onZoomChangeListener = onZoomChangeListener;
+    }
+
+    public void callOnZoomChange(float zoom) {
+        if (onZoomChangeListener != null) {
+            onZoomChangeListener.onZoomChanged(zoom);
         }
     }
 }
