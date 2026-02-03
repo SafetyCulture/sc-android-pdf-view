@@ -40,6 +40,7 @@ import com.github.barteksc.pdfviewer.link.LinkHandler;
 import com.github.barteksc.pdfviewer.listener.Callbacks;
 import com.github.barteksc.pdfviewer.listener.OnErrorListener;
 import com.github.barteksc.pdfviewer.listener.OnRenderListener;
+import com.github.barteksc.pdfviewer.listener.OnZoomChangeListener;
 import com.github.barteksc.pdfviewer.model.PagePart;
 import com.github.barteksc.pdfviewer.scroll.ScrollHandle;
 import com.github.barteksc.pdfviewer.source.DocumentSource;
@@ -937,6 +938,7 @@ public class PDFView extends RelativeLayout {
      */
     public void zoomTo(float zoom) {
         this.zoom = zoom;
+        callbacks.callOnZoomChange(zoom);
     }
 
     /**
@@ -1135,6 +1137,8 @@ public class PDFView extends RelativeLayout {
 
         private OnRenderListener onRenderListener;
 
+        private OnZoomChangeListener onZoomChangeListener;
+
         private LinkHandler linkHandler = new DefaultLinkHandler(PDFView.this);
 
         private int defaultPage = 0;
@@ -1177,6 +1181,11 @@ public class PDFView extends RelativeLayout {
             return this;
         }
 
+        public Configurator onZoomChange(OnZoomChangeListener onZoomChangeListener) {
+            this.onZoomChangeListener = onZoomChangeListener;
+            return this;
+        }
+
         public Configurator spacing(int spacing) {
             this.spacing = spacing;
             return this;
@@ -1195,6 +1204,7 @@ public class PDFView extends RelativeLayout {
             PDFView.this.recycle();
             PDFView.this.callbacks.setOnError(onErrorListener);
             PDFView.this.callbacks.setOnRender(onRenderListener);
+            PDFView.this.callbacks.setOnZoomChange(onZoomChangeListener);
             PDFView.this.callbacks.setLinkHandler(linkHandler);
             PDFView.this.setSwipeEnabled(enableSwipe);
             PDFView.this.setNightMode(nightMode);
