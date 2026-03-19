@@ -40,6 +40,7 @@ import com.github.barteksc.pdfviewer.link.LinkHandler;
 import com.github.barteksc.pdfviewer.listener.Callbacks;
 import com.github.barteksc.pdfviewer.listener.OnErrorListener;
 import com.github.barteksc.pdfviewer.listener.OnRenderListener;
+import com.github.barteksc.pdfviewer.listener.OnScrollProgressListener;
 import com.github.barteksc.pdfviewer.listener.OnZoomChangeListener;
 import com.github.barteksc.pdfviewer.model.PagePart;
 import com.github.barteksc.pdfviewer.scroll.ScrollHandle;
@@ -803,6 +804,7 @@ public class PDFView extends RelativeLayout {
         currentXOffset = offsetX;
         currentYOffset = offsetY;
         float positionOffset = getPositionOffset();
+        callbacks.callOnScrollProgress(positionOffset);
 
         if (moveHandle && scrollHandle != null && !documentFitsView()) {
             scrollHandle.setScroll(positionOffset);
@@ -1139,6 +1141,8 @@ public class PDFView extends RelativeLayout {
 
         private OnZoomChangeListener onZoomChangeListener;
 
+        private OnScrollProgressListener onScrollProgressListener;
+
         private LinkHandler linkHandler = new DefaultLinkHandler(PDFView.this);
 
         private int defaultPage = 0;
@@ -1186,6 +1190,11 @@ public class PDFView extends RelativeLayout {
             return this;
         }
 
+        public Configurator onScrollProgress(OnScrollProgressListener onScrollProgressListener) {
+            this.onScrollProgressListener = onScrollProgressListener;
+            return this;
+        }
+
         public Configurator spacing(int spacing) {
             this.spacing = spacing;
             return this;
@@ -1205,6 +1214,7 @@ public class PDFView extends RelativeLayout {
             PDFView.this.callbacks.setOnError(onErrorListener);
             PDFView.this.callbacks.setOnRender(onRenderListener);
             PDFView.this.callbacks.setOnZoomChange(onZoomChangeListener);
+            PDFView.this.callbacks.setOnScrollProgress(onScrollProgressListener);
             PDFView.this.callbacks.setLinkHandler(linkHandler);
             PDFView.this.setSwipeEnabled(enableSwipe);
             PDFView.this.setNightMode(nightMode);

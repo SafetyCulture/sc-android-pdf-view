@@ -40,6 +40,11 @@ public class Callbacks {
      */
     private OnZoomChangeListener onZoomChangeListener;
 
+    /**
+     * Call back object to call when scroll progress changes
+     */
+    private OnScrollProgressListener onScrollProgressListener;
+
     public void setOnError(OnErrorListener onErrorListener) {
         this.onErrorListener = onErrorListener;
     }
@@ -75,6 +80,16 @@ public class Callbacks {
     public void callOnZoomChange(float zoom) {
         if (onZoomChangeListener != null) {
             onZoomChangeListener.onZoomChanged(zoom);
+        }
+    }
+
+    public void setOnScrollProgress(OnScrollProgressListener onScrollProgressListener) {
+        this.onScrollProgressListener = onScrollProgressListener;
+    }
+
+    public void callOnScrollProgress(float progress) {
+        if (onScrollProgressListener != null) {
+            onScrollProgressListener.onScrollProgress(progress);
         }
     }
 }
