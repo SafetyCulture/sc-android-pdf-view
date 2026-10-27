@@ -4,7 +4,18 @@
 ## 3.3.0 (2022-10-31)
 Changelogs are not taken from the main repository.
 Not available in deprecated `jcenter.bintray`.
-Available only as a submodule.
+
+## SafetyCulture artifact
+
+Published to GitHub Packages (`SafetyCulture/iAuditor-Artifacts`) as
+`com.safetyculture.platform:android-pdf-viewer`.
+
+To publish a new version:
+
+1. Change `version` in `android-pdf-viewer/build.gradle`.
+2. Set `GPR_USER` and `GPR_API_KEY` (or `gpr.usr` and `gpr.key` in `~/.gradle/gradle.properties`).
+   The token needs the `write:packages` scope.
+3. Run `./gradlew :android-pdf-viewer:publishReleasePublicationToGitHubPackagesRepository`.
 
 # Android PdfViewer
 
