@@ -1,1 +1,29 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/SafetyCulture/iAuditor-Artifacts")
+            credentials {
+                username = providers.gradleProperty("gpr.usr").orElse(providers.environmentVariable("GPR_USER")).getOrElse("")
+                password = providers.gradleProperty("gpr.key").orElse(providers.environmentVariable("GPR_API_KEY")).getOrElse("")
+            }
+            content {
+                includeGroup("com.safetyculture.platform")
+            }
+        }
+    }
+}
+
+rootProject.name = "sc-android-pdf-view"
 include ':android-pdf-viewer'

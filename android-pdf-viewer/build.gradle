@@ -1,21 +1,54 @@
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
+
+group = 'com.safetyculture.platform'
+version = '3.3.0'
 
 android {
     namespace = "com.github.barteksc.pdfviewer"
-
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdk = 37
+    buildToolsVersion = "37.0.0"
 
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "3.3.0"
+        minSdk = 26
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {
-    implementation rootProject.ext.AppCompat
+    implementation 'androidx.appcompat:appcompat:1.8.0'
     api 'com.safetyculture.platform:android-pdfium:1.9.3'
+}
+
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/SafetyCulture/iAuditor-Artifacts")
+                credentials {
+                    username = providers.gradleProperty("gpr.usr").orElse(providers.environmentVariable("GPR_USER")).getOrElse("")
+                    password = providers.gradleProperty("gpr.key").orElse(providers.environmentVariable("GPR_API_KEY")).getOrElse("")
+                }
+            }
+        }
+        publications {
+            create("release", MavenPublication) {
+                from(components.release)
+                artifactId = "android-pdf-viewer"
+            }
+        }
+    }
 }
